@@ -1,35 +1,55 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import React, { useState, useEffect } from 'react';
+import { getCompromissos } from './services/api';
+import CompromissoList from './CompromissoList';
+import CompromissoForm from './CompromissoForm';
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [compromissos, setCompromissos] = useState([]);
+  const [showForm, setShowForm] = useState(false);
+  const [editando, setEditando] = useState(null);
+
+  useEffect(() => {
+    carregarCompromissos();
+  }, []);
+
+  const carregarCompromissos = async () => {
+    try {
+      const data = await getCompromissos();
+      setCompromissos(data);
+    } catch (error) {
+      alert('Erro ao carregar compromissos');
+    }
+  };
 
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    <div style={{ padding: '20px' }}>
+      <h1>Agenda</h1>
+      
+      <button onClick={() => setShowForm(true)}>
+        + Novo Compromisso
+      </button>
+
+      <CompromissoList 
+        compromissos={compromissos}
+        onEdit={(comp) => {
+          setEditando(comp);
+          setShowForm(true);
+        }}
+        onUpdate={carregarCompromissos}
+      />
+
+      {showForm && (
+        <CompromissoForm 
+          compromisso={editando}
+          onClose={() => {
+            setShowForm(false);
+            setEditando(null);
+          }}
+          onSave={carregarCompromissos}
+        />
+      )}
+    </div>
+  );
 }
 
-export default App
+export default App;

@@ -4,6 +4,15 @@ from mongo import db
 
 bp = Blueprint('compromissos', __name__, url_prefix='/compromissos')
 
+# Permitir trailing slash e sem barra final
+@bp.route('', methods=['GET'])
+def listar_compromissos_sem_barra():
+    return listar_compromissos()
+
+@bp.route('', methods=['POST'])
+def criar_compromisso_sem_barra():
+    return criar_compromisso()
+
 def objid(id_str):
     try:
         return ObjectId(id_str)
