@@ -12,7 +12,6 @@ const CompromissoForm = ({ compromisso, onClose, onSave }) => {
     if (compromisso) {
       let data_horario = '';
       if (compromisso.data && compromisso.horario) {
-        // Monta string no formato yyyy-MM-ddTHH:mm
         data_horario = `${compromisso.data}T${compromisso.horario}`;
       }
       setForm({
