@@ -10,10 +10,15 @@ const CompromissoForm = ({ compromisso, onClose, onSave }) => {
 
   useEffect(() => {
     if (compromisso) {
+      let data_horario = '';
+      if (compromisso.data && compromisso.horario) {
+        // Monta string no formato yyyy-MM-ddTHH:mm
+        data_horario = `${compromisso.data}T${compromisso.horario}`;
+      }
       setForm({
         titulo: compromisso.titulo,
         descricao: compromisso.descricao,
-        data_horario: compromisso.data_horario.slice(0, 16)
+        data_horario
       });
     }
   }, [compromisso]);

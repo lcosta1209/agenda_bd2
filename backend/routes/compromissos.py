@@ -4,7 +4,6 @@ from mongo import db
 
 bp = Blueprint('compromissos', __name__, url_prefix='/compromissos')
 
-# Permitir trailing slash e sem barra final
 @bp.route('', methods=['GET'])
 def listar_compromissos_sem_barra():
     return listar_compromissos()
